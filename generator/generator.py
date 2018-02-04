@@ -14,7 +14,7 @@ PROC_NUM = 4
 GROUP_PER_PROC = 50000
 GROUP_SIZE = 50
 ACTION_PER_GROUP = 1000 * GROUP_SIZE
-KAFKA_SERVER = getenv('BROKERS', 'localhost:9092')
+KAFKA_SERVER = getenv('BROKERS', '10.0.0.12:9092')
 
 def json_serializer(data):
     return json.dumps(data).encode('utf-8')
