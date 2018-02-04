@@ -17,14 +17,11 @@ DB_INDEX = {
     'recommendation': 3,
 }
 
-# REDIS_HOST = getenv('REDIS_HOST', '52.70.7.10')
-# REDIS_HOST = getenv('REDIS_HOST', '10.0.0.11')
-REDIS_HOST = getenv('REDIS_HOST', 'localhost')
+REDIS_HOST = getenv('REDIS_HOST', '10.0.0.5')
 REDIS_PORT = int(getenv('REDIS_PORT', 6379))
-# INT_FIELDS = ('PlayersEstimate', 'Owners', 'RecommendationCount')
-# FLOAT_FIELDS = ('Metacritic', 'PriceInitial', 'PriceFinal', 'InitialRating')
+INT_FIELDS = ('PlayersEstimate', 'Owners', 'RecommendationCount')
 FLOAT_FIELDS = ('Metacritic', 'PriceInitial', 'PriceFinal', 'InitialRating')
-TIME_RATE = 0.5
+TIME_RATE = 1.0
 
 game_db = {}
 
@@ -41,10 +38,10 @@ def fetch_game_info(gid):
     if gid not in game_db:
         r = connect_redis('game')
         game_db[gid] = r.hgetall(gid)
-        # for field in INT_FIELDS:
-        #     game_db[gid][field] = int(game_db[gid][field])
+        for field in INT_FIELDS:
+            game_db[gid][field] = int(game_db[gid].get(field, 0))
         for field in FLOAT_FIELDS:
-            game_db[gid][field] = float(game_db[gid][field])
+            game_db[gid][field] = float(game_db[gid].get(field, 0))
 
     return game_db[gid]
 

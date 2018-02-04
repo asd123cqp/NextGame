@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 # server
 
+from os import getenv
 from recommender import Recommender, get_library
 from flask import Flask, jsonify
 from kafka import KafkaProducer
+from flask_cors import CORS
 
-KAFKA_SERVER = 'localhost:9092'
+KAFKA_SERVER = getenv('BROKERS', '10.0.0.12:9092')
 
 app = Flask(__name__)
+CORS(app)
 rec = Recommender()
 producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, \
                          key_serializer=str.encode, \

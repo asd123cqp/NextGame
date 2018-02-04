@@ -1,0 +1,102 @@
+﻿<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/custom.css"">
+  <title>NextGame</title>
+</head>
+<body onload="showGames()">
+
+  <!--==================== Navbar ====================-->
+  <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="index.html">NextGame</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <span class="fa fa-home"></span> Home <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="model.html">
+            <span class="fa fa-plus"></span> Model
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a id="show-username" class="nav-link" href="#">
+            <span class="fa fa-user"></span> Sign in
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="fa fa-sign-out"></span> Sign out
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+  <!--==================== Navbar ====================-->
+
+  <!--==================== Filer ====================-->
+  <div class="form form-login">
+    <div class="table-content"">
+      <h1>NextGame</h1>
+      <form id="search-form" class="container" onchange="showGames()">
+        <div class="top-row">
+          <div class="field-wrap">
+            <select id="type-form" name="type">
+
+              <option value="recommendation" selected="selected">
+                Recommendation
+              </option>
+
+              <option value="library">
+                Game Library
+              </option>
+
+            </select>
+          </div>
+
+          <div class="field-wrap">
+            <input id="search-bar" name="kw" type="text" autocomplete="off" placeholder="Enter user id..."/>
+          </div>
+
+        </div>
+      </form>
+      <button class="button button-block" onclick="showGames()">
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!--==================== Filer ====================-->
+
+  <!--==================== Content ====================-->
+  <div class="container">
+    <div id="activities-frame" class="row">
+    </div>
+  </div>
+  <!--==================== Content ====================-->
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <script>
+    document.getElementById("search-form").addEventListener("submit", function(event){
+        event.preventDefault();
+        showGames();
+    });
+  </script>
+  <script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>

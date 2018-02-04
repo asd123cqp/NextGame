@@ -41,12 +41,12 @@ INIT_RATING_MULTI = 1.0 / 50.0
 WEALTHINESS_MULTI = 1000
 PLAY_TIME_MU = 0.5
 PLAY_TIME_SIGMA = 1.0
-TIME_TO_RATE = 0.5
+TIME_TO_RATE = 1.0
 MAX_TRIAL = 100
 #################### Constants End####################
 
 class User(object):
-    """docstring for User"""
+    '''docstring for User'''
     def __init__(self, user_id, user_profile=None):
         self.data = {}
         self.id = user_id

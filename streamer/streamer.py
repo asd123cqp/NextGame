@@ -10,7 +10,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
 BROKERS = {"metadata.broker.list": getenv('BROKERS', '10.0.0.12:9092')}
-REDIS_HOST = getenv('REDIS_HOST', '10.0.0.11')
+REDIS_HOST = getenv('REDIS_HOST', '10.0.0.5')
 REDIS_PORT = int(getenv('REDIS_PORT', 6379))
 MAX_USER_BATCH = 100
 MAX_ACTION_BATCH = 1000
