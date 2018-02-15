@@ -6,7 +6,7 @@ from pyspark import SparkContext
 from pyspark.mllib.recommendation import ALS, MatrixFactorizationModel
 
 BATCH_SIZE = 1000
-# MAX_RDD_DEPTH = 20
+MAX_RDD_DEPTH = 100
 RANK = 10
 ITERATION = 5
 MODEL_DEST = 'model.pkl'
@@ -18,20 +18,18 @@ def main():
     sc.setLogLevel('ERROR')
 
     # retrieve user data from redis, chunk by chunk
-    ratings = []
-    # depth = 0
+    depth = 0
     for batch in db.fetch_all_user_lib(BATCH_SIZE):
-        # ratings = ratings.union(sc.parallelize(batch))
-        ratings += batch
+        ratings = ratings.union(sc.parallelize(batch))
 
         # checkpoint long chained rdd to avoid stack overflow
-        # if depth >= MAX_RDD_DEPTH:
-        #     ratings.checkpoint()
-        #     depth = 0
-        # depth += 1
+        if depth >= MAX_RDD_DEPTH:
+            ratings.checkpoint()
+            depth = 0
+        depth += 1
 
     ratings = sc.parallelize(ratings)
-    # ratings.checkpoint()
+    ratings.cache()
     print('Training...')
 
     # extract model
