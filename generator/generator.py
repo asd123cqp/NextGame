@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# producer
+# generator
 import json, time
 from os import getenv
 from multiprocessing import Value, Process
@@ -11,10 +11,12 @@ from faker import Faker
 
 INIT_OFFSET = 1
 PROC_NUM = 4
-GROUP_PER_PROC = 50000
-GROUP_SIZE = 50
-ACTION_PER_GROUP = 1000 * GROUP_SIZE
+GROUP_PER_PROC = 10000
+GROUP_SIZE = 10
+ACTION_PER_GROUP = 500 * GROUP_SIZE
 KAFKA_SERVER = getenv('BROKERS', '10.0.0.12:9092')
+
+#################### Helper functions ####################
 
 def json_serializer(data):
     return json.dumps(data).encode('utf-8')
@@ -24,6 +26,9 @@ def connect_kafka(ks, vs):
                          key_serializer=ks, \
                          value_serializer=vs)
 
+#################### Helper functions ####################
+
+# create a group of users of GROUP_SIZE
 def create_user_group(offset):
     with offset.get_lock():
         cur = offset.value
@@ -40,14 +45,17 @@ def create_user_group(offset):
 
     return users
 
+# given a group of users, take random actions base on
 def take_actions(users, action_count):
     new_action_count = 0
 
-    # make random actions
+    # create probability vector
     probs = [user.data['activeness'] for user in users]
     tmp = sum(probs)
     probs = [p / tmp for p in probs]
     producer = connect_kafka(str.encode, str.encode)
+
+    # generate random actions based on user attributes
     for _ in range(ACTION_PER_GROUP):
         user = choice(users, p=probs)
         res = user.take_random_action()
@@ -56,11 +64,14 @@ def take_actions(users, action_count):
             producer.send(res[0], key=str(user.id), value=val_str)
             new_action_count += 1
 
+    # update shared count
     with action_count.get_lock():
         action_count.value += new_action_count
 
     return new_action_count
 
+
+# worker processes entry point
 def worker(offset, action_count, pname):
     for _ in range(GROUP_PER_PROC):
         users = create_user_group(offset)

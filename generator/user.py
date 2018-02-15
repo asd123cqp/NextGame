@@ -46,7 +46,7 @@ MAX_TRIAL = 100
 #################### Constants End####################
 
 class User(object):
-    '''docstring for User'''
+    '''The User class'''
     def __init__(self, user_id, user_profile=None):
         self.data = {}
         self.id = user_id
@@ -79,6 +79,7 @@ class User(object):
                                 'play_time_sum': 0.0}
 
     def take_random_action(self):
+        # take random action based on user attributes
         if np.random.random_sample() < self.data['adventurousness'] or \
            self.data['library']['rating_sum'] == 0:
             act, (gid, val) = 'buy', self.buy_random_game()
@@ -125,6 +126,7 @@ class User(object):
         if self.data['library']['rating_sum'] == 0.0:
             return -1
 
+        # probility vector for owned games
         prob = [r / self.data['library']['rating_sum'] \
                 for r in self.data['library']['rating']]
 
@@ -132,6 +134,7 @@ class User(object):
         game_id = self.data['library']['id'][idx]
         rating = self.data['library']['rating'][idx]
 
+        # generate normally distributed playtime
         offset = np.log10(rating * ((self.data['activeness'] * 100) ** 0.2))
         mu = PLAY_TIME_MU * offset
         sigma = PLAY_TIME_SIGMA + offset
