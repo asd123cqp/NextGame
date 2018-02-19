@@ -20,6 +20,13 @@ Then, the Generator will fake actions based on the said attributes. For example,
 
 ## Streamer
 
+The Streamer component is used to aggregated & reduced streaming data in small batches, throttle the writing frequency to database, reduce the round trip time and increase the overall throughput.
+
+Currently, it's a two-node m4.large cluster, which is able to handle up to 10,000 events/sec.
+
 ## Trainer
 
+The Trainer is used to train the Recommender model in batch. [Spark MLlib ALS  method for Collaborative Filtering](https://spark.apache.org/docs/2.2.1/mllib-collaborative-filtering.html) is used. Both explicit and implicit method were tested, and the former performs better. Ratings are converted from playtime, using the formula `rating = BASE_RATING + log10(playtime)`.
+
 ## Recommender
+
