@@ -30,3 +30,4 @@ The Trainer is used to train the Recommender model in batch. [Spark MLlib ALS  m
 
 ## Recommender
 
+The recommender component combines the live streaming events and the batch trained model, recompute the user factor, and generate live recommendation that reflects the users' most recent activity.
